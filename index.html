@@ -367,6 +367,43 @@ body.app .cbook{min-height:880px}
 body.app .page-in>.shgrid{flex:1 1 auto;grid-template-rows:auto repeat(var(--wk),minmax(60px,1fr))}
 body.app .shgrid .tc{height:auto}
 body.app{padding-bottom:calc(76px + env(safe-area-inset-bottom))}
+/* PDF */
+body.pdf{background:#fff;padding:0;margin:0}
+body.pdf .stage{margin:0;overflow:visible}
+.pp{position:relative;width:816px;height:1056px;overflow:hidden;break-after:page;page-break-after:always;background:#fff}
+.pp>.page,.pp>.coverwrap{zoom:1.2}
+.pp .page{border-radius:0;box-shadow:none}
+.pp .page::before{display:none}
+.pp .cbook{border-radius:0;box-shadow:none}
+.pp .cbook .crings{display:none}
+.pp .page-in{padding-right:52px}
+.ptabs{position:absolute;right:0;top:70px;display:flex;flex-direction:column;gap:4px;z-index:20}
+.ptabs a{display:block;width:40px;padding:9px 0 9px 6px;border-radius:10px 0 0 10px;background:var(--b-tint);color:var(--b-ink);font:700 11px 'Quicksand';letter-spacing:.04em;text-align:center;text-decoration:none}
+.ptabs a:nth-child(even){background:var(--b-soft)}
+.ptabs a.on{background:var(--b);color:#fff}
+.ptabs a.pix{background:var(--b-deep);color:#fff;font-size:14px;padding:6px 0 6px 6px}
+.pdfa{color:inherit;text-decoration:none;display:contents}
+.pdfa.tca{display:block}
+.pdf .shgrid a.tca .tc{width:100%}
+.pdf .addsp,.pdf .shbadge,.pdf .sum,.pdf .prog,.pdf .progt,.pdf [data-brush="X"],.pdf [data-brush="O"],.pdf .pal h4 small,.pdf .heart,.pdf .stk-layer{display:none!important}
+.pdf .brushes{grid-template-columns:repeat(4,1fr)}
+.pdf .brushes button.on{border-color:transparent;background:#fff}
+.pdf .tot b,.pdf .bal b{color:transparent;display:inline-block;min-width:110px;border-bottom:1.5px solid var(--line)}
+.pdf .dmon{display:inline-block;align-self:flex-start;margin-left:auto;border:1.5px solid #CDBDF0;border-radius:999px;padding:5px 12px;font-size:12px;font-weight:700;color:#7058A8;background:#fff}
+.ixg{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:6px}
+.ixl{display:block;text-decoration:none;background:rgba(255,255,255,.92);border:1.5px solid #F2B6C6;border-radius:14px;padding:12px 14px}
+.ixl b{display:block;font-family:'Playfair Display';font-size:18px;color:var(--navy)}.ixl span{font-size:12px;color:var(--muted);font-weight:600}
+.ixm{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.ixc{display:flex;flex-direction:column;gap:4px}
+.ixi{display:block;position:relative;aspect-ratio:1;border-radius:12px;background-size:cover;background-position:center;overflow:hidden;text-decoration:none}
+.ixi span{position:absolute;left:0;right:0;bottom:0;padding:14px 4px 5px;background:linear-gradient(transparent,rgba(46,40,60,.7));color:#fff;font-weight:700;font-size:13px;text-align:center}
+.ixs{display:flex;justify-content:space-between;gap:2px}.ixs a{font-size:10px;font-weight:700;color:var(--b-deep);text-decoration:none}
+.spg{display:grid;grid-template-columns:1fr 1fr;gap:5px 12px;margin-top:4px}
+.spl{display:flex;align-items:center;gap:7px;text-decoration:none;border-bottom:1px dashed var(--line);padding:3px 0;min-width:0}
+.spl i{font-style:normal;font-size:15px;flex:none}.spl b{flex:none;font-size:11.5px;color:#C25A80;width:46px}.spl span{font-size:11.5px;line-height:1.25;color:var(--text)}
+.pdf .fhint{display:none}
+.pdf span.wline{display:block;height:var(--lh)}
+@page{size:8.5in 11in;margin:0}
 /* año */
 .yr{display:grid;grid-template-columns:repeat(3,1fr);gap:14px 14px;margin-top:10px}
 .ym{align-self:start}
@@ -474,7 +511,8 @@ const STK_CATS=[["Turnos", ["data:image/webp;base64,UklGRmRkAABXRUJQVlA4WAoAAAAQ
 const $=s=>document.querySelector(s);
 const esc=s=>String(s==null?"":s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 const YEAR=2027;
-let LANG="es";try{LANG=localStorage.getItem("entreturnos-lang")||((navigator.language||"es").toLowerCase().startsWith("es")?"es":"en");}catch(e){}
+const QP=new URLSearchParams(location.search),PDFMODE=QP.get("pdf")==="1";
+let LANG="es";try{LANG=QP.get("lang")||localStorage.getItem("entreturnos-lang")||((navigator.language||"es").toLowerCase().startsWith("es")?"es":"en");}catch(e){}
 window.etSetLang=l=>{try{localStorage.setItem("entreturnos-lang",l);}catch(e){}location.reload();};
 const MONTHS=["Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre"];
 const WD=["domingo","lunes","martes","miércoles","jueves","viernes","sábado"];
@@ -668,7 +706,7 @@ const TR=LANG!=="en"?{}:{
 "Se sustituirá lo que hay ahora en esta agenda por la copia. ¿Continuar?":"What's in this planner now will be replaced by the backup. Continue?",
 "¿Seguro que quieres borrar todo lo que has escrito? Si no tienes una copia, no se podrá recuperar.":"Are you sure you want to erase everything you've written? Without a backup it can't be recovered.",
 "☀️ Turno de mañana":"☀️ Morning shift","🌇 Turno de tarde":"🌇 Afternoon shift","🌙 Turno de noche":"🌙 Night shift","☀️ Turno de mañana y tarde":"☀️ Morning & afternoon shift","🏖️ Vacaciones":"🏖️ Vacation","🛋️ Libre":"🛋️ Day off",
-"Desde mi agenda Entre Turnos":"From my Between Shifts planner","No se pudo abrir esa imagen":"That image couldn't be opened"
+"Fechas especiales":"Special dates","Días sanitarios y los tuyos":"Healthcare days and yours","Los días sanitarios ya están marcados en la agenda. Debajo, apunta los tuyos.":"Healthcare days are already marked in the planner. Write yours below.","Desde mi agenda Entre Turnos":"From my Between Shifts planner","No se pudo abrir esa imagen":"That image couldn't be opened"
 };
 const TRV=Object.fromEntries(Object.values(TR).map(v=>[v,1]));
 const cap=s=>s.charAt(0).toUpperCase()+s.slice(1);
@@ -1260,10 +1298,12 @@ if(IOS)setTimeout(showInstBar,1500);
 const ico=document.querySelector('link[rel="apple-touch-icon"]');if(ico)$("#instIco").src=ico.href;else $("#instIco").remove();
 if("serviceWorker" in navigator&&canInstall()&&(location.protocol==="https:"||location.hostname==="localhost")){navigator.serviceWorker.register("sw.js").catch(()=>{});}
 window.__ET={go,SEQ,P:{openMenu,fontPanel,viewPanel,setPanel,stkPanel,calPanel,spForm,installPanel}};
+
+if(PDFMODE){DB.pages={};if(QP.get("color"))DB.settings.color=QP.get("color");DB.settings.view="fit";applySettings();renderPDF();}else{
 applySettings();
 const tv=todayView();
 VIEW=(tv&&DB.last)?tv:(DB.last&&SEQI[vk(DB.last)]!=null?DB.last:{v:"cover"});
-render();
+render();}
 if(document.fonts&&document.fonts.ready)document.fonts.ready.then(()=>applyZoom());
 })();
 </script>

@@ -1,4 +1,5 @@
 # Entre Turnos · Agenda de enfermería 2027
+*Between Shifts · 2027 Nursing Planner — en español e inglés / in Spanish and English*
 
 Agenda digital para quien trabaja a turnos: cuadrante para pintar (mañana, tarde, noche, vacaciones, libre), hábitos, finanzas, proyectos, notas, dos hojas por día con stickers, fechas especiales sanitarias y conexión con el calendario del móvil.
 

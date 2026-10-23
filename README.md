@@ -7,6 +7,6 @@ Se instala como una app desde el navegador:
 - **iPhone (Safari):** Compartir → «Añadir a pantalla de inicio».
 - **Android (Chrome):** menú ⋮ → «Instalar aplicación».
 
-Los datos se guardan solo en el dispositivo de cada persona. Funciona sin conexión.
+La primera vez pide el código de acceso que viene con la compra. Los datos se guardan solo en el dispositivo de cada persona. Funciona sin conexión.
 
 Creada con cariño por Marga · @margabamedigital. Uso personal: no está permitido compartir ni revender este contenido.

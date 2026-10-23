@@ -1060,5 +1060,46 @@ render();
 if(document.fonts&&document.fonts.ready)document.fonts.ready.then(()=>applyZoom());
 })();
 </script>
+<div id="gate" hidden>
+ <div class="g-card">
+  <img class="g-ico" src="icon-192.png" alt="">
+  <div class="g-kick">Agenda de enfermería 2027</div>
+  <h1>Entre Turnos</h1>
+  <p class="g-sub">Para quien cuida de día, de tarde y de noche</p>
+  <p class="g-txt">Escribe el código de acceso que recibiste con tu compra.</p>
+  <form id="gForm" autocomplete="off"><input id="gIn" type="text" inputmode="text" autocapitalize="characters" spellcheck="false" placeholder="Tu código" aria-label="Código de acceso"><button type="submit">Entrar</button></form>
+  <p class="g-err" id="gErr" hidden>Ese código no es correcto. Revísalo en el archivo de tu compra.</p>
+  <p class="g-help">Solo se pide la primera vez en cada dispositivo.</p>
+ </div>
+</div>
+<style>
+#gate{box-sizing:border-box;position:fixed;inset:0;z-index:9999;display:grid;place-items:center;padding:24px;background:radial-gradient(circle at 30% 20%,#FBEEF1,#F6E3E8 60%,#EFD3DB);font-family:'Quicksand',system-ui,sans-serif}
+#gate{grid-template-columns:minmax(0,380px);justify-content:center}
+#gate[hidden]{display:none}
+.g-card{box-sizing:border-box;min-width:0;background:#FFFCFA;border-radius:28px;padding:30px 26px;max-width:380px;width:100%;text-align:center;box-shadow:0 20px 50px rgba(107,67,80,.18)}
+.g-ico{width:76px;height:76px;border-radius:20px;box-shadow:0 6px 16px rgba(107,67,80,.18);margin-bottom:12px}
+.g-kick{letter-spacing:.22em;text-transform:uppercase;font-size:11px;color:#A86E7C;font-weight:700}
+#gate h1{font-family:'Great Vibes',cursive;font-weight:400;color:#2E3F6E;font-size:48px;margin:4px 0 0;line-height:1.1}
+.g-sub{font-family:'Dancing Script',cursive;font-size:20px;color:#E0708F;margin:0 0 18px}
+.g-txt{color:#4A3A40;font-size:15px;margin:0 0 14px}
+#gForm{display:flex;gap:8px}
+#gIn{flex:1;min-width:0;font-size:17px;padding:12px 14px;border:1.5px solid #E8A9B8;border-radius:14px;background:#fff;color:#4A3A40;text-transform:uppercase;letter-spacing:.06em;font-family:inherit}
+#gForm button{border:0;border-radius:14px;padding:0 18px;background:#6B4350;color:#fff;font-weight:700;font-size:15px;font-family:inherit}
+.g-err{color:#B4475E;font-size:14px;margin:12px 0 0}
+.g-help{color:#8A777D;font-size:12.5px;margin:16px 0 0}
+</style>
+<script>
+(function(){
+  var OK="entreturnos-acceso-ok",H=["zw6w64"];
+  function h(s){var x=2166136261;for(var i=0;i<s.length;i++){x^=s.charCodeAt(i);x=Math.imul(x,16777619)>>>0;}return x.toString(36);}
+  function norm(s){return String(s||"").toUpperCase().replace(/[^A-Z0-9]/g,"");}
+  var ok=false;try{ok=localStorage.getItem(OK)==="1";}catch(e){}
+  var g=document.getElementById("gate");
+  if(!ok){g.hidden=false;setTimeout(function(){var i=document.getElementById("gIn");if(i)i.focus();},300);}
+  document.getElementById("gForm").addEventListener("submit",function(e){e.preventDefault();
+    if(H.indexOf(h("et|"+norm(document.getElementById("gIn").value)))>-1){try{localStorage.setItem(OK,"1");}catch(e){}g.hidden=true;}
+    else document.getElementById("gErr").hidden=false;});
+})();
+</script>
 </body>
 </html>
